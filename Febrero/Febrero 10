@@ -1,1 +1,2 @@
-
+ - conversiones entre tipos
+  stoi(), stod(), to_string()
