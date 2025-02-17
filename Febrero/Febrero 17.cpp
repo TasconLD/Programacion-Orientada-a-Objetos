@@ -18,3 +18,19 @@ int main (){
 
 
 }
+/* Comentarios de 
+varias lineas
+    */
+
+//conversiones entre tipos
+
+#include <iostream>
+#include <string> using namespace std;
+int main()
+{
+int c = 20;
+string s = to_string(c); // Convierte entero a string
+int d = stoi(s); // Convierte string a entero
+double e = 5.123;
+string t = to_string(e); // Convierte double a string
+double f = stod(t); // Convierte string a double
