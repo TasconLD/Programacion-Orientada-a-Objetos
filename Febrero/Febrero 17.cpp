@@ -18,8 +18,10 @@ int main (){
 
 
 }
-/* Comentarios de 
-varias lineas
+/* fundamentos de programacion orientada a objetos
+    grupo 80
+    laboratorio 1
+    integrantes: laura dayana tascon (2438545-2724)
     */
 
 //conversiones entre tipos
