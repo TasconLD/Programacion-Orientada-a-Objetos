@@ -84,4 +84,6 @@ int main() {
     return 0;
 }
 
-//como usar getline 
+//como usar getline, como usar sumatoria, arrays de un arreglo con numeros aleatorios, insertar numeros en arreglos//
+
+
