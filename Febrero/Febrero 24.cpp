@@ -78,7 +78,7 @@ using namespace std;
 
 int main()
 {
-    Bombillo miBombillo();
+    Bombillo miBombillo;
     cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
 
     miBombillo.encender();
