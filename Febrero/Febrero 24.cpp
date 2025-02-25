@@ -1,4 +1,4 @@
-ARCHIVO BOMBILLO.H
+//ARCHIVO BOMBILLO.H
 
 /*
 Autor: Laura Dayana Tascon
@@ -25,6 +25,7 @@ class Bombillo
     public:
         void encender ();
         void apagar ();
+        string verEstado();
 
         Bombillo(); //Metodo constructor
         virtual ~Bombillo(); // Metodo destructor
@@ -34,3 +35,35 @@ class Bombillo
 };
 
 #endif // BOMBILLO_H
+
+//_______________________________________
+
+//ARCHIVO BOMBILLO.CPP
+
+#include "Bombillo.h"
+
+Bombillo::Bombillo()
+{
+    estado = "Apagado";
+}
+
+Bombillo::encender()
+{
+    estado = "Encendido";
+
+}
+
+Bombillo::apagar()
+{
+    estado = "Apagado";
+}
+
+string Bombillo::verEstado()
+{
+    return estado;
+}
+
+Bombillo::~Bombillo()
+{
+    //dtor
+}
