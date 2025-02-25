@@ -67,3 +67,25 @@ Bombillo::~Bombillo()
 {
     //dtor
 }
+
+//_______________________
+
+//ARCHIVO MAIN
+
+#include <iostream>
+#include "Bombillo.h"
+using namespace std;
+
+int main()
+{
+    Bombillo miBombillo();
+    cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
+
+    miBombillo.encender();
+    cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
+
+    miBombillo.apagar();
+    cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
+
+    return 0;
+}
