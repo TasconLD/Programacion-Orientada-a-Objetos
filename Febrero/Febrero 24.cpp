@@ -6,32 +6,29 @@ Codigo: 2438545
 Fecha: 24/02/2025
 */
 
+
 using namespace std;
 
 #ifndef BOMBILLO_H
 #define BOMBILLO_H
 #include <string>
 
-//atributos privados, funciones publicos
+// Atributos privados, funciones públicas
 
 class Bombillo
 {
-
     private:
         string estado;
 
     protected:
 
     public:
-        void encender ();
-        void apagar ();
+        void encender();
+        void apagar();
         string verEstado();
 
-        Bombillo(); //Metodo constructor
-        virtual ~Bombillo(); // Metodo destructor
-
-
-
+        Bombillo(); // Método constructor
+        virtual ~Bombillo(); // Método destructor
 };
 
 #endif // BOMBILLO_H
@@ -41,19 +38,19 @@ class Bombillo
 //ARCHIVO BOMBILLO.CPP
 
 #include "Bombillo.h"
+#include <iostream> // Agregado para buenas prácticas
 
 Bombillo::Bombillo()
 {
     estado = "Apagado";
 }
 
-Bombillo::encender()
+void Bombillo::encender() // Agregado 'void' y 'Bombillo::'
 {
     estado = "Encendido";
-
 }
 
-Bombillo::apagar()
+void Bombillo::apagar() // Agregado 'void' y 'Bombillo::'
 {
     estado = "Apagado";
 }
@@ -65,7 +62,7 @@ string Bombillo::verEstado()
 
 Bombillo::~Bombillo()
 {
-    //dtor
+    // Destructor
 }
 
 //_______________________
@@ -79,13 +76,13 @@ using namespace std;
 int main()
 {
     Bombillo miBombillo;
-    cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
+    cout << "Estado actual: " << miBombillo.verEstado() << endl;
 
     miBombillo.encender();
-    cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
+    cout << "Estado actual: " << miBombillo.verEstado() << endl;
 
     miBombillo.apagar();
-    cout << "Estado actual: "<<miBombillo.verEstado()<<endl;
+    cout << "Estado actual: " << miBombillo.verEstado() << endl;
 
     return 0;
 }
