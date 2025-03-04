@@ -19,7 +19,9 @@ vectores
 #include<vector>
 
 insertarPasajeros()
-mostrarPasajreos()
+mostrarPasajeros()
+
+vector <pasajeros> pasajeros;
 
 colocar los gets y sets
 
