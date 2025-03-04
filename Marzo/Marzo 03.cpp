@@ -31,7 +31,7 @@ Utilice una metodología orientada a objetos para resolver el ejercicio anterior
 [] atributos
 () metodos
 
-//////programacion de aplicaciones y sistemas en la nube carpeta/////
+//////programacion de aplicaciones y sistemas en la nube carpeta, keys, etc, concesionario/////
 ________________
 Banco
 
