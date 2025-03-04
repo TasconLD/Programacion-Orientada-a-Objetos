@@ -14,29 +14,13 @@ objeto: kia, renault (instancias de clase)
 */
 
 /*
-Un banco necesita gestionar la información de sus clientes y las cuentas estos
-manejan. Los clientes tienen una identificación, nombre y telefono. Una cuenta
-se identifica mediante un número de cuenta y tiene un saldo.
-Una cuenta puede pertenecer a uno o varios clientes. Por lo tanto se
-requiere registrar los clientes asociados a una cuenta. El banco le permite a los
-clientes hacer consignaciones y retiros de dinero.
-El banco necesita un programa que le permita crear clientes y cuentas, hacer
-consignaciones y retiros de la cuenta. El banco tambien necesita calcular el
-promedio del saldo de las cuentas. Tambien se requiere imprimir un informe
-que describa cada cuenta, el saldo y el nombre de los clientes a los que
-pertenece. El banco debe manejar información de todos los clientes y sus
-cuentas usando arreglos de objetos.
-Utilice una metodología orientada a objetos para resolver el ejercicio anterior.
+utilizando la clase vector realizar ejercicio banco y aerolinea
+vectores 
+#include<vector>
 
-[] atributos
-() metodos
+insertarPasajeros()
+mostrarPasajreos()
 
-//////programacion de aplicaciones y sistemas en la nube carpeta, keys, etc, concesionario/////
-________________
-Banco
-
-Clientes                      Cuentas
-[id, nombre, telefono] -------[numero de cuenta, saldo](consignacion, retiro de dinero)
-
+colocar los gets y sets
 
 */
