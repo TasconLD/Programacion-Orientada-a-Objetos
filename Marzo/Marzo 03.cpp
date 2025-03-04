@@ -25,5 +25,5 @@ mostrarPasajeros()
 vector <pasajeros> pasajeros;
 
 colocar los gets y sets
-
+draw.io
 */
