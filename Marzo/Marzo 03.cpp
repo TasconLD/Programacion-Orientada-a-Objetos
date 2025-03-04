@@ -16,6 +16,7 @@ objeto: kia, renault (instancias de clase)
 /*
 utilizando la clase vector realizar ejercicio de LABORATORIO banco y aerolinea
 vectores 
+y hacer el diagrama de clases 
 #include<vector>
 
 insertarPasajeros()
