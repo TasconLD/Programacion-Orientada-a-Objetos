@@ -8,12 +8,12 @@ para que clase hija herede atributos deben estar en protect y no en privado, y h
 
 
 _________________________________________________
--Referencias:
+-Referencias: &
 int valor=5;
 int &meses = valor; // meses es un nuevo nombre para valor, es una referencia, todo lo que le pasa a valor le pasa a meses
-- Punteros:
+- Punteros: *
 los punteros son las variables
-donde guardas direcciones.
+donde guardas direcciones, no variables
 Se declaran así:
 int *p; 
 
