@@ -1,4 +1,5 @@
 /*despues de semana santa parcial 1
+taller 2 lunes 07 de abril
 temas:
 lenguaje c++
 que son los archivos .h: estructura o defincion del objeto, atributos y metodos, .cpp: metodos del codigo, main: llamar los objetos
