@@ -9,6 +9,8 @@ crear diagramas de clases
 diferenciar: 
 -if(p) o bien if(p != nullptr) que son equivalentes
 -if(not p) o bien if(p == nullptr) que son equivalentes
+diferenciar:
+- si son entrada, salida o entrada-salida
 
 
 _________________________________________________
