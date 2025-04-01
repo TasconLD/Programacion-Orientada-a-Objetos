@@ -11,5 +11,12 @@ _________________________________________________
 -Referencias:
 int valor=5;
 int &meses = valor; // meses es un nuevo nombre para valor, es una referencia, todo lo que le pasa a valor le pasa a meses
+- Punteros:
+los punteros son las variables
+donde guardas direcciones.
+Se declaran así:
+int *p; 
+
+
 
 */
