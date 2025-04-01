@@ -5,6 +5,9 @@ que son los archivos .h: estructura o defincion del objeto, atributos y metodos,
 que es abstracion, encapsulamiento, polimorfismo, herencia
 atributos privados y metodos publicos
 para que clase hija herede atributos deben estar en protect y no en privado, y hereda tanto atributos como metodos
+diferenciar: 
+-if(p) o bien if(p != nullptr) que son equivalentes
+-if(not p) o bien if(p == nullptr) que son equivalentes
 
 
 _________________________________________________
