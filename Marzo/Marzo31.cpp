@@ -43,7 +43,9 @@ int main()
 }
 
 /*
-
+Clase
+A veces necesitamos un puntero que no apunta a
+nada. Para eso existe la palabra clave nullptr  (sirve pa hacer un virus)
 
 
 
