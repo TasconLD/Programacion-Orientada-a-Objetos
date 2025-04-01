@@ -5,6 +5,7 @@ que son los archivos .h: estructura o defincion del objeto, atributos y metodos,
 que es abstracion, encapsulamiento, polimorfismo, herencia
 atributos privados y metodos publicos
 para que clase hija herede atributos deben estar en protect y no en privado, y hereda tanto atributos como metodos
+crear diagramas de clases
 diferenciar: 
 -if(p) o bien if(p != nullptr) que son equivalentes
 -if(not p) o bien if(p == nullptr) que son equivalentes
@@ -50,7 +51,7 @@ Clase
 A veces necesitamos un puntero que no apunta a
 nada. Para eso existe la palabra clave nullptr  (sirve pa hacer un virus)
 
-
+https://replit.com/
 
 
 
