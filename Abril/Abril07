@@ -1,6 +1,10 @@
 Clase
 Variables estáticas y dinámicas
 
+dinamicas se crean con new y se destruyen con delete 
+
+
+_______________________________
 temas parcial:
 diferencia entre estatica y dinamico, la existencia es diferente
 estatico:
