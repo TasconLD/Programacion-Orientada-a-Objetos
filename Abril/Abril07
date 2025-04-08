@@ -9,5 +9,6 @@ temas parcial:
 diferencia entre estatica y dinamico, la existencia es diferente
 estatico:
 dinamico: siempre va a existir
-
 codigo ¿como esta creado?: (10)pdf
+¿como se crea y como se destruye una variable?
+¿que es un memory leak?
