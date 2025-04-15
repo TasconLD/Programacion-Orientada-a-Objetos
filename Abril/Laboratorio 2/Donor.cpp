@@ -1,36 +1,51 @@
 #include "Donor.h"
-#include <sstream>
+#include <regex> // Para las expresiones regulares
 #include <iostream>
-#include <algorithm>
+#include <sstream>
 
-// Muestra los detalles del donante
-void Donor::donorDetails() const {
-    std::cout << "Nombre del donante: " << name << std::endl;
-    std::cout << "Distrito del donante: " << district << std::endl;
-    std::cout << "Tipo de sangre del donante: " << bloodType << std::endl;
+using namespace std;
+
+// Método para validar el nombre del donante
+bool Donor::validateName(const string& name) {
+    // Expresión regular para permitir letras y espacios
+    regex nameRegex("^[A-Za-záéíóúÁÉÍÓÚ ]+$");
+    return regex_match(name, nameRegex);
 }
 
-// Convierte una línea del archivo de texto en un objeto Donor
-Donor Donor::parseLine(const std::string& line) {
-    Donor d;
-    std::stringstream ss(line);
-    std::string token;
-
-    // Parsear cada parte de la línea y asignar valores a los atributos
-    getline(ss, token, ','); d.donorId = std::stoi(trim(token));
-    getline(ss, token, ','); d.name = trim(token);
-    getline(ss, token, ','); d.address = trim(token);
-    getline(ss, token, ','); d.district = std::stoi(trim(token));
-    getline(ss, token, ','); d.bloodType = trim(token);
-    getline(ss, token, ','); d.number = std::stoi(trim(token));
-
-    return d;
+// Método para validar el tipo de sangre
+bool Donor::validateBloodType(const string& bloodType) {
+    // Expresión regular para validar tipos de sangre como A+, B-, AB+, O-
+    regex bloodTypeRegex("^(A|B|AB|O)(\\+|\\-)$");
+    return regex_match(bloodType, bloodTypeRegex);
 }
 
-// Elimina los espacios en blanco antes y después de un string
-std::string Donor::trim(const std::string& str) {
-    size_t first = str.find_first_not_of(' ');
-    if (first == std::string::npos) return "";  // Si no hay caracteres, retornar vacío
-    size_t last = str.find_last_not_of(' ');
-    return str.substr(first, (last - first + 1));
+// Método para validar el número de teléfono
+bool Donor::validatePhoneNumber(int number) {
+    // Convertir el número en cadena para validar con regex
+    string phoneNumber = to_string(number);
+    regex phoneRegex("^\\d{10}$"); // Verificar que tenga exactamente 10 dígitos
+    return regex_match(phoneNumber, phoneRegex);
+}
+
+Donor Donor::parseLine(const string& line) {
+    stringstream ss(line);
+    Donor donor;
+
+    // Lectura del donante desde la línea
+    string id, name, address, district, bloodType, number;
+    getline(ss, id, ',');
+    getline(ss, name, ',');
+    getline(ss, address, ',');
+    getline(ss, district, ',');
+    getline(ss, bloodType, ',');
+    getline(ss, number);
+
+    donor.donorId = stoi(id);
+    donor.name = name;
+    donor.address = address;
+    donor.district = stoi(district);
+    donor.bloodType = bloodType;
+    donor.number = stoi(number);
+
+    return donor;
 }
