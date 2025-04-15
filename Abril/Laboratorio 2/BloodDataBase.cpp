@@ -1,104 +1,239 @@
 #include "BloodDatabase.h"
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
 #include <limits>
+#include <stdexcept>
+#include <cctype>
+#include <algorithm>
 
-// Método para registrar los detalles del donante
+using namespace std;
+
+// Mostrar las opciones de los departamentos
+void BloodDatabase::displayProvinces() {
+    cout << "Elige el departamento:\n";
+    cout << "1. Putumayo\n";
+    cout << "2. Cauca\n";
+    cout << "3. Valle del Cauca\n";
+    cout << "4. Amazonas\n";
+    cout << "5. Risaralda\n";
+    cout << "6. Antioquia\n";
+    cout << "7. Norte de Santander\n";
+}
+
+// Limpiar la consola (para diferentes sistemas operativos)
+void BloodDatabase::clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+// Esperar que el usuario presione una tecla para continuar
+void BloodDatabase::waitForKeyPress() {
+    cout << "Presiona cualquier tecla para continuar...";
+    cin.ignore();
+    cin.get();
+}
+
+// Validar la entrada de datos numéricos
+int BloodDatabase::getValidatedInput(const string& prompt) {
+    int value;
+    string input;
+    while (true) {
+        cout << prompt;
+        getline(cin, input);
+        try {
+            if (!all_of(input.begin(), input.end(), ::isdigit)) {
+                throw invalid_argument("La entrada contiene caracteres no numéricos");
+            }
+            value = stoi(input);
+            break;
+        } catch (const invalid_argument& e) {
+            cout << "Entrada no válida: " << e.what() << ". Por favor ingrese un número válido." << endl;
+        } catch (const out_of_range&) {
+            cout << "Entrada fuera de rango. Por favor ingrese un número válido." << endl;
+        }
+    }
+    return value;
+}
+
+// Obtener los detalles de un nuevo donante
 void BloodDatabase::getDonorDetails() {
-    std::string name, bloodType;
-    int age;
+    clearConsole();
+    cout << "Ingrese los detalles del donante\n";
 
-    // Se solicita el nombre del donante
-    std::cout << "Ingrese el nombre del donante: ";
-    std::getline(std::cin, name);
+    Donor newDonor;
+    newDonor.donorId = getValidatedInput("Id: ");
+    
+    cout << "Nombre: ";
+    string name;
+    getline(cin, name);
+    if (!Donor::validateName(name)) {
+        cout << "Nombre inválido. Solo se permiten letras y espacios.\n";
+        return;
+    }
+    newDonor.name = name;
 
-    // Se solicita el tipo de sangre
-    std::cout << "Ingrese el tipo de sangre: ";
-    std::getline(std::cin, bloodType);
+    cout << "Dirección: ";
+    getline(cin, newDonor.address);
 
-    // Se solicita la edad del donante
-    std::cout << "Ingrese la edad del donante: ";
-    std::cin >> age;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpiar buffer de entrada
+    displayProvinces();
+    newDonor.district = getValidatedInput("Departamento (ingrese el número correspondiente): ");
 
-    // Se crea un objeto Donor con los datos proporcionados
-    Donor newDonor(name, bloodType, age);
+    cout << "Tipo de sangre: ";
+    string bloodType;
+    getline(cin, bloodType);
+    if (!Donor::validateBloodType(bloodType)) {
+        cout << "Tipo de sangre inválido. Ingrese un tipo válido (A+, B-, etc.).\n";
+        return;
+    }
+    newDonor.bloodType = bloodType;
 
-    // Se añade el nuevo donante al vector de donantes
+    cout << "Número: ";
+    int phone;
+    cin >> phone;
+    cin.ignore(); // Limpiar el buffer
+    if (!Donor::validatePhoneNumber(phone)) {
+        cout << "Número inválido. Debe tener exactamente 10 dígitos.\n";
+        return;
+    }
+    newDonor.number = phone;
+
     donors.push_back(newDonor);
 }
 
-// Método para guardar los datos de los donantes en un archivo de texto
+// Guardar los datos de los donantes en el archivo
 void BloodDatabase::writeDataToFile() {
-    std::ofstream outFile("donors.txt"); // Archivo de salida
+    ofstream outfile(fileName, ios::app);
 
-    // Escribimos cada donante en el archivo
-    for (const Donor& donor : donors) {
-        outFile << donor.getName() << "\n" 
-                << donor.getBloodType() << "\n" 
-                << donor.getAge() << "\n";
+    if (!outfile) {
+        cout << "Error al abrir el archivo para escribir." << endl;
+        return;
     }
 
-    outFile.close(); // Cerramos el archivo
+    Donor newDonor = donors.back();
+    outfile << newDonor.donorId << ",    " << newDonor.name << ",    " << newDonor.address << ",    " << newDonor.district << ",    " << newDonor.bloodType << ",    " << newDonor.number << endl;
+
+    outfile.close();
 }
 
-// Método para buscar y mostrar los detalles de un donante por nombre
+// Mostrar todos los donantes registrados
+void BloodDatabase::showAllDonors() const {
+    clearConsole();
+    if (donors.empty()) {
+        cout << "No hay donantes registrados.\n";
+    } else {
+        cout << "Donantes registrados:\n";
+        for (const auto& donor : donors) {
+            cout << "Nombre: " << donor.name << "\n";
+            cout << "Dirección: " << donor.address << "\n";
+            cout << "Departamento: " << donor.district << "\n";
+            cout << "Tipo de sangre: " << donor.bloodType << "\n";
+            cout << "Número: " << donor.number << "\n\n";
+        }
+    }
+    waitForKeyPress();
+}
+
+// Buscar y mostrar los donantes según el nombre
 void BloodDatabase::searchAndDisplay() const {
-    std::string name;
-    std::cout << "Ingrese el nombre del donante a buscar: ";
-    std::getline(std::cin, name);
+    clearConsole();
+    string name;
+    cout << "Ingrese el nombre del donante a buscar: ";
+    getline(cin, name);
 
     bool found = false;
-    // Recorremos la lista de donantes para encontrar el que coincide con el nombre
-    for (const Donor& donor : donors) {
-        if (donor.getName() == name) {
-            donor.printDonorDetails(); // Si lo encontramos, mostramos sus detalles
+    for (const auto& donor : donors) {
+        if (donor.name == name) {
+            cout << "Donante encontrado:\n";
+            cout << "Nombre: " << donor.name << "\n";
+            cout << "Dirección: " << donor.address << "\n";
+            cout << "Departamento: " << donor.district << "\n";
+            cout << "Tipo de sangre: " << donor.bloodType << "\n";
+            cout << "Número: " << donor.number << "\n\n";
             found = true;
             break;
         }
     }
 
-    // Si no se encuentra al donante, mostramos un mensaje
     if (!found) {
-        std::cout << "Donante no encontrado." << std::endl;
+        cout << "Donante no encontrado.\n";
     }
+
+    waitForKeyPress();
 }
 
-// Método para eliminar un donante de la base de datos por nombre
-void BloodDatabase::deleteDonor(const std::string& donorName) {
-    // Buscamos y eliminamos al donante con el nombre dado
-    auto it = std::remove_if(donors.begin(), donors.end(), 
-        [&donorName](const Donor& donor) { return donor.getName() == donorName; });
+// Eliminar un donante de la lista
+void BloodDatabase::deleteDonor(const string& donorName) {
+    auto it = remove_if(donors.begin(), donors.end(), [&donorName](const Donor& donor) {
+        return donor.name == donorName;
+    });
 
-    // Si encontramos al donante, lo eliminamos
     if (it != donors.end()) {
         donors.erase(it, donors.end());
-        std::cout << "Donante eliminado correctamente." << std::endl;
+        cout << "Donante eliminado con éxito.\n";
     } else {
-        std::cout << "Donante no encontrado." << std::endl;
+        cout << "Donante no encontrado.\n";
     }
 }
 
-// Método para mostrar todos los donantes registrados en la base de datos
-void BloodDatabase::showAllDonors() const {
-    if (donors.empty()) {
-        std::cout << "No hay donantes registrados." << std::endl;
-    } else {
-        std::cout << "Lista de Donantes Registrados:" << std::endl;
-        // Recorremos el vector de donantes y mostramos sus detalles
-        for (const Donor& donor : donors) {
-            donor.printDonorDetails(); // Mostramos los detalles del donante
+// Mostrar el menú principal en consola
+int main() {
+    string donorName;
+    BloodDatabase database;
+    int choice;
+
+    while (true) {
+        BloodDatabase::clearConsole();
+
+        cout << " ░█████╗░██████╗░██╗░░░██╗███████╗  ██████╗░░█████╗░░░░░░██╗░█████╗░\n"
+             " ██╔══██╗██╔══██╗██║░░░██║╚════██║  ██╔══██╗██╔══██╗░░░░░██║██╔══██╗\n"
+             " ██║░░╚═╝██████╔╝██║░░░██║░░███╔═╝  ██████╔╝██║░░██║░░░░░██║███████║\n"
+             " ██║░░██╗██╔══██╗██║░░░██║██╔══╝░░  ██╔══██╗██║░░██║██╗░░██║██╔══██║\n"
+             " ╚█████╔╝██║░░██║╚██████╔╝███████╗  ██║░░██║╚█████╔╝╚█████╔╝██║░░██║\n"
+             " ░╚════╝░╚═╝░░╚═╝░╚═════╝░╚══════╝  ╚═╝░░╚═╝░╚════╝░░╚════╝░╚═╝░░╚═╝\n";
+
+        cout << "1. Registrar donante\n";
+        cout << "2. Buscar donante\n";
+        cout << "3. Eliminar donante\n";
+        cout << "4. Ver todos los donantes\n";  // Nueva opción
+        cout << "5. Salir\n";
+        cout << "Ingrese su elección: ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
+
+        switch (choice) {
+            case 1:
+                database.getDonorDetails();
+                database.writeDataToFile();
+                break;
+            case 2:
+                database.searchAndDisplay();
+                break;
+            case 3:
+                cout << "Ingrese el nombre del donante a eliminar: ";
+                getline(cin, donorName);
+                database.deleteDonor(donorName);
+                BloodDatabase::waitForKeyPress();
+                break;
+            case 4:
+                database.showAllDonors(); // Llamada a la nueva opción
+                break;
+            case 5:
+                cout << "Gracias por usar el Sistema de la Cruz Roja" << endl;
+                return 0;
+            default:
+                cout << "Opción no válida. Inténtalo de nuevo.\n";
+                BloodDatabase::waitForKeyPress();
+                break;
         }
     }
-}
 
-// Método para limpiar la consola de la pantalla
-void BloodDatabase::clearConsole() {
-    // Dependiendo del sistema operativo, se usa un comando diferente para limpiar la pantalla
-    // Para Windows:
-    std::system("cls");
-    // Para sistemas Unix/Linux:
-    // std::system("clear");
+    return 0;
 }
 
 // Método para esperar a que el usuario presione una tecla antes de continuar
