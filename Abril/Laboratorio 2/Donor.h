@@ -1,24 +1,30 @@
 #ifndef DONOR_H
 #define DONOR_H
 
+#include <iostream>
 #include <string>
+#include <regex> // Librería para expresiones regulares
 
 class Donor {
 public:
-    // Atributos públicos, pero pueden ser modificados según el encapsulamiento
-    int donorId, district, number;
-    std::string name, address, bloodType;
+    int donorId;
+    std::string name;
+    std::string address;
+    int district;
+    std::string bloodType;
+    int number;
 
-    // Método que muestra los detalles del donante
-    void donorDetails() const;
+    // Método para validar el nombre con regex
+    static bool validateName(const std::string& name);
+    
+    // Método para validar el tipo de sangre con regex
+    static bool validateBloodType(const std::string& bloodType);
+    
+    // Método para validar el número de teléfono con regex
+    static bool validatePhoneNumber(int number);
 
-    // Método estático para parsear una línea de texto y convertirla en un objeto Donor
+    // Método para parsear la línea de texto del archivo
     static Donor parseLine(const std::string& line);
-
-private:
-    // Método privado para eliminar los espacios en blanco antes y después de un string
-    static std::string trim(const std::string& str);
 };
 
 #endif // DONOR_H
-
