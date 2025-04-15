@@ -153,4 +153,25 @@ void BloodDatabase::searchAndDisplay() const {
         }
         std::cout << ":" << std::endl;
         for (const auto& d : donors) {
-            std::cout << "Nombre: " << d.name <<
+            std::cout << "Nombre: " << d.name << std::endl;
+            std::cout << "Dirección: " << d.address << std::endl;
+            std::cout << "Tipo de sangre: " << d.bloodType << std::endl;
+            std::cout << "Número: " << d.number << std::endl;
+            std::cout << "----------------------------------------\n";
+        }
+    }
+}
+
+// Elimina un donante por nombre (si existe)
+void BloodDatabase::deleteDonor(const std::string& donorName) {
+    auto it = std::find_if(donors.begin(), donors.end(),
+        [&donorName](const Donor& d) { return d.name == donorName; });
+
+    if (it != donors.end()) {
+        donors.erase(it);
+        std::cout << "Donante " << donorName << " eliminado correctamente.\n";
+    } else {
+        std::cout << "Donante no encontrado.\n";
+    }
+}
+
