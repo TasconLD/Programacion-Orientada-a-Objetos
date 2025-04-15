@@ -1,177 +1,108 @@
 #include "BloodDatabase.h"
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <vector>
-#include <sstream>
 #include <limits>
-#include <stdexcept>
-#include <cctype>
-#include <algorithm>
 
-using namespace std;
-
-// Muestra la lista de provincias para seleccionar
-void BloodDatabase::displayProvinces() {
-    std::cout << "Elige el departamento:\n";
-    std::cout << "1. Putumayo\n";
-    std::cout << "2. Cauca\n";
-    std::cout << "3. Valle del Cauca\n";
-    std::cout << "4. Amazonas\n";
-    std::cout << "5. Risaralda\n";
-    std::cout << "6. Antioquia\n";
-    std::cout << "7. Norte de Santander\n";
-}
-
-// Limpia la consola (para Windows)
-void BloodDatabase::clearConsole() {
-#ifdef _WIN32
-    system("cls");
-#else
-    //   system("clear");  // Para Linux/Mac, descomentando si es necesario
-#endif
-}
-
-// Pausa y espera que el usuario presione una tecla
-void BloodDatabase::waitForKeyPress() {
-    std::cout << "Presiona cualquier tecla para continuar...";
-    std::cin.ignore();
-    std::cin.get();
-}
-
-// Método para pedir y validar la entrada numérica del usuario
-int BloodDatabase::getValidatedInput(const std::string& prompt) {
-    int value;
-    std::string input;
-    while (true) {
-        std::cout << prompt;
-        std::getline(std::cin, input);
-        try {
-            if (!std::all_of(input.begin(), input.end(), ::isdigit)) {
-                throw std::invalid_argument("La entrada contiene caracteres no numéricos");
-            }
-            value = std::stoi(input);
-            break; // si la conversión es exitosa, salir del bucle
-        } catch (const std::invalid_argument& e) {
-            std::cout << "Entrada no válida: " << e.what() << ". Por favor ingrese un número válido." << std::endl;
-        } catch (const std::out_of_range&) {
-            std::cout << "Entrada fuera de rango. Por favor ingrese un número válido." << std::endl;
-        }
-    }
-    return value;
-}
-
-// Permite al usuario ingresar los detalles de un donante
+// Método para registrar los detalles del donante
 void BloodDatabase::getDonorDetails() {
-    clearConsole();
-    std::cout << "Ingrese los detalles del donante\n";
+    std::string name, bloodType;
+    int age;
 
-    Donor newDonor;
-    newDonor.donorId = getValidatedInput("Id: ");
-    std::cout << "Nombre: ";
-    std::getline(std::cin, newDonor.name);
-    std::cout << "Dirección: ";
-    std::getline(std::cin, newDonor.address);
+    // Se solicita el nombre del donante
+    std::cout << "Ingrese el nombre del donante: ";
+    std::getline(std::cin, name);
 
-    displayProvinces();
-    newDonor.district = getValidatedInput("departamento (ingrese el número correspondiente): ");
-    std::cout << "Tipo de sangre: ";
-    std::getline(std::cin, newDonor.bloodType);
-    newDonor.number = getValidatedInput("Número: ");
+    // Se solicita el tipo de sangre
+    std::cout << "Ingrese el tipo de sangre: ";
+    std::getline(std::cin, bloodType);
 
+    // Se solicita la edad del donante
+    std::cout << "Ingrese la edad del donante: ";
+    std::cin >> age;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpiar buffer de entrada
+
+    // Se crea un objeto Donor con los datos proporcionados
+    Donor newDonor(name, bloodType, age);
+
+    // Se añade el nuevo donante al vector de donantes
     donors.push_back(newDonor);
 }
 
-// Escribe los datos del último donante al archivo
+// Método para guardar los datos de los donantes en un archivo de texto
 void BloodDatabase::writeDataToFile() {
-    std::ofstream outfile(fileName, std::ios::app);
+    std::ofstream outFile("donors.txt"); // Archivo de salida
 
-    if (!outfile) {
-        std::cout << "Error al abrir el archivo para escribir." << std::endl;
-        return;
+    // Escribimos cada donante en el archivo
+    for (const Donor& donor : donors) {
+        outFile << donor.getName() << "\n" 
+                << donor.getBloodType() << "\n" 
+                << donor.getAge() << "\n";
     }
 
-    Donor newDonor = donors.back();
-    outfile << newDonor.donorId << ",    " << newDonor.name << ",    " << newDonor.address << ",    " << newDonor.district << ",    " << newDonor.bloodType << ",    " << newDonor.number << std::endl;
-
-    outfile.close();
+    outFile.close(); // Cerramos el archivo
 }
 
-// Permite buscar y mostrar los donantes de un departamento
+// Método para buscar y mostrar los detalles de un donante por nombre
 void BloodDatabase::searchAndDisplay() const {
-    clearConsole();
-    displayProvinces();
-    int provinceName = getValidatedInput("Ingrese el número de la departamento: ");
+    std::string name;
+    std::cout << "Ingrese el nombre del donante a buscar: ";
+    std::getline(std::cin, name);
 
-    std::cout << "Ingrese la dirección (dejar en blanco para omitir): ";
-    std::string addressFilter;
-    std::getline(std::cin, addressFilter);
-
-    std::cout << "Ingrese el tipo de sangre (dejar en blanco para omitir): ";
-    std::string bloodTypeFilter;
-    std::getline(std::cin, bloodTypeFilter);
-
-    std::ifstream inFile(fileName);
-
-    if (!inFile) {
-        std::cout << "Error al abrir el archivo para leer." << std::endl;
-        return;
-    }
-
-    std::vector<Donor> donors;
-    std::string line;
     bool found = false;
-
-    while (std::getline(inFile, line)) {
-        Donor d = Donor::parseLine(line);
-        bool match = d.district == provinceName &&
-            (addressFilter.empty() || d.address.find(addressFilter) != std::string::npos) &&
-            (bloodTypeFilter.empty() || d.bloodType == bloodTypeFilter);
-
-        if (match) {
-            donors.push_back(d);
+    // Recorremos la lista de donantes para encontrar el que coincide con el nombre
+    for (const Donor& donor : donors) {
+        if (donor.getName() == name) {
+            donor.printDonorDetails(); // Si lo encontramos, mostramos sus detalles
             found = true;
+            break;
         }
     }
 
+    // Si no se encuentra al donante, mostramos un mensaje
     if (!found) {
-        std::cout << "No se encontraron personas de la departamento " << provinceName;
-        if (!addressFilter.empty()) {
-            std::cout << " con dirección que contiene '" << addressFilter << "'\n";
-        }
-        if (!bloodTypeFilter.empty()) {
-            std::cout << " y tipo de sangre '" << bloodTypeFilter << "'\n";
-        }
-        std::cout << "." << std::endl;
-    } else {
-        std::cout << "Personas de la departamento " << provinceName;
-        if (!addressFilter.empty()) {
-            std::cout << " con dirección que contiene '" << addressFilter << "'\n";
-        }
-        if (!bloodTypeFilter.empty()) {
-            std::cout << " y tipo de sangre '" << bloodTypeFilter << "'\n";
-        }
-        std::cout << ":" << std::endl;
-        for (const auto& d : donors) {
-            std::cout << "Nombre: " << d.name << std::endl;
-            std::cout << "Dirección: " << d.address << std::endl;
-            std::cout << "Tipo de sangre: " << d.bloodType << std::endl;
-            std::cout << "Número: " << d.number << std::endl;
-            std::cout << "----------------------------------------\n";
-        }
+        std::cout << "Donante no encontrado." << std::endl;
     }
 }
 
-// Elimina un donante por nombre (si existe)
+// Método para eliminar un donante de la base de datos por nombre
 void BloodDatabase::deleteDonor(const std::string& donorName) {
-    auto it = std::find_if(donors.begin(), donors.end(),
-        [&donorName](const Donor& d) { return d.name == donorName; });
+    // Buscamos y eliminamos al donante con el nombre dado
+    auto it = std::remove_if(donors.begin(), donors.end(), 
+        [&donorName](const Donor& donor) { return donor.getName() == donorName; });
 
+    // Si encontramos al donante, lo eliminamos
     if (it != donors.end()) {
-        donors.erase(it);
-        std::cout << "Donante " << donorName << " eliminado correctamente.\n";
+        donors.erase(it, donors.end());
+        std::cout << "Donante eliminado correctamente." << std::endl;
     } else {
-        std::cout << "Donante no encontrado.\n";
+        std::cout << "Donante no encontrado." << std::endl;
     }
 }
 
+// Método para mostrar todos los donantes registrados en la base de datos
+void BloodDatabase::showAllDonors() const {
+    if (donors.empty()) {
+        std::cout << "No hay donantes registrados." << std::endl;
+    } else {
+        std::cout << "Lista de Donantes Registrados:" << std::endl;
+        // Recorremos el vector de donantes y mostramos sus detalles
+        for (const Donor& donor : donors) {
+            donor.printDonorDetails(); // Mostramos los detalles del donante
+        }
+    }
+}
+
+// Método para limpiar la consola de la pantalla
+void BloodDatabase::clearConsole() {
+    // Dependiendo del sistema operativo, se usa un comando diferente para limpiar la pantalla
+    // Para Windows:
+    std::system("cls");
+    // Para sistemas Unix/Linux:
+    // std::system("clear");
+}
+
+// Método para esperar a que el usuario presione una tecla antes de continuar
+void BloodDatabase::waitForKeyPress() {
+    std::cout << "Presiona cualquier tecla para continuar...";
+    std::cin.get(); // Espera por la entrada de una tecla
+}
