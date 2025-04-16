@@ -12,17 +12,18 @@ private:
     string bloodType;
     string id;
     string phone;
+    string city;
 
 public:
     // Constructor que recibe todos los datos del donante
-    Donor(string name, string bloodType, string id, string phone);
+    Donor(string name, string bloodType, string id, string phone, string city);
 
     // Métodos getters para acceder a los datos del donante
     string getName() const;
     string getBloodType() const;
     string getId() const;
     string getPhone() const;
+    string getCity() const;
 };
 
 #endif
-
