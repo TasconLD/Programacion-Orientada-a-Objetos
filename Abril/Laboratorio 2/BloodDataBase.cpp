@@ -19,9 +19,11 @@ void BloodDatabase::readDataFromFile() {
     ifstream file("donors.txt");
 
     if (file.is_open()) {
-        string name, bloodType, id, phone;
-        while (getline(file, name) && getline(file, bloodType) && getline(file, id) && getline(file, phone)) {
-            donors.emplace_back(name, bloodType, id, phone);
+        string name, bloodType, id, phone, city;
+        donors.clear();
+        while (getline(file, name) && getline(file, bloodType) && getline(file, id) && getline(file, phone) && getline(file, city)) {
+
+            donors.emplace_back(name, bloodType, id, phone, city);
         }
         file.close();
     }
@@ -32,10 +34,11 @@ void BloodDatabase::writeDataToFile() const {
     ofstream file("donors.txt");
     if (file.is_open()) {
         for (const auto& donor : donors) {
-            file << donor.getName() << endl;
-            file << donor.getBloodType() << endl;
-            file << donor.getId() << endl;
-            file << donor.getPhone() << endl;
+            file << donor.getName() << '\n' ;
+            file << donor.getBloodType() << '\n';
+            file << donor.getId() << '\n';
+            file << donor.getPhone() << '\n';
+            file << donor.getCity()<< '\n';
         }
         file.close();
     }
@@ -52,7 +55,7 @@ void BloodDatabase::validateInput(string& input, const string& pattern, const st
 
 // Solicita al usuario los datos del nuevo donante y valida cada campo
 void BloodDatabase::getDonorDetails() {
-    string name, bloodType, id, phone;
+    string name, bloodType, id, phone, city;
 
     cout << "Ingrese el nombre del donante: ";
     getline(cin, name);
@@ -69,7 +72,11 @@ void BloodDatabase::getDonorDetails() {
     getline(cin, phone);
     validateInput(phone, "^[0-9]{7,10}$", "Teléfono inválido. Debe contener entre 7 y 10 dígitos.");
 
-    donors.emplace_back(name, bloodType, id, phone);
+    cout << "Ingrese la ciudad del donante: ";
+    getline(cin, city);
+
+
+    donors.emplace_back(name, bloodType, id, phone, city);
     cout << "Donante registrado exitosamente." << endl;
     waitForKeyPress();
 }
@@ -90,6 +97,7 @@ void BloodDatabase::searchAndDisplay() const {
         cout << "Tipo de sangre: " << it->getBloodType() << endl;
         cout << "Cédula: " << it->getId() << endl;
         cout << "Teléfono: " << it->getPhone() << endl;
+        cout << "Ciudad: " << it->getCity() <<endl;
     } else {
         cout << "Donante no encontrado.\n";
     }
@@ -112,7 +120,7 @@ void BloodDatabase::deleteDonor(const string& name) {
     }
 }
 
-// NUEVO: muestra todos los donantes registrados en consola
+// Muestra todos los donantes registrados en la consola
 void BloodDatabase::displayAllDonors() const {
     if (donors.empty()) {
         cout << "No hay donantes registrados aún." << endl;
@@ -122,7 +130,8 @@ void BloodDatabase::displayAllDonors() const {
             cout << "Nombre: " << d.getName() << endl;
             cout << "Tipo de sangre: " << d.getBloodType() << endl;
             cout << "Cédula: " << d.getId() << endl;
-            cout << "Teléfono: " << d.getPhone() << "\n------------------------\n";
+            cout << "Teléfono: " << d.getPhone() << endl;
+            cout << "Ciudad: " <<d.getCity() << "\n------------------------\n" <<endl;
         }
     }
     waitForKeyPress();
@@ -136,6 +145,13 @@ void BloodDatabase::clearConsole() {
     system("clear");
 #endif
 }
+
+// Pausa la pantalla hasta que el usuario presione Enter
+void BloodDatabase::waitForKeyPress() {
+    cout << "\nPresione Enter para continuar...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
 
 // Pausa la pantalla hasta que el usuario presione Enter
 void BloodDatabase::waitForKeyPress() {
