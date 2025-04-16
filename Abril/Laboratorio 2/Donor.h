@@ -1,30 +1,28 @@
 #ifndef DONOR_H
 #define DONOR_H
 
-#include <iostream>
 #include <string>
-#include <regex> // Librería para expresiones regulares
+using namespace std;
 
+// Clase del donante de sangre
 class Donor {
+private:
+    // Atributos privados para aplicar el encapsulamiento
+    string name;
+    string bloodType;
+    string id;
+    string phone;
+
 public:
-    int donorId;
-    std::string name;
-    std::string address;
-    int district;
-    std::string bloodType;
-    int number;
+    // Constructor que recibe todos los datos del donante
+    Donor(string name, string bloodType, string id, string phone);
 
-    // Método para validar el nombre con regex
-    static bool validateName(const std::string& name);
-    
-    // Método para validar el tipo de sangre con regex
-    static bool validateBloodType(const std::string& bloodType);
-    
-    // Método para validar el número de teléfono con regex
-    static bool validatePhoneNumber(int number);
-
-    // Método para parsear la línea de texto del archivo
-    static Donor parseLine(const std::string& line);
+    // Métodos getters para acceder a los datos del donante
+    string getName() const;
+    string getBloodType() const;
+    string getId() const;
+    string getPhone() const;
 };
 
-#endif // DONOR_H
+#endif
+
