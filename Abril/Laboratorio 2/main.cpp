@@ -25,7 +25,7 @@ int main() {
         std::cout << "2. Buscar donante\n";
         std::cout << "3. Eliminar donante\n";
         std::cout << "4. Salir\n";
-        std::cout << "5. Ver todos los donantes\n";  // Nueva opción para ver todos los donantes
+        std::cout << "5. Ver todos los donantes\n";  // La nueva opción que implementamos para ver todos los donantes que se registraron
         std::cout << "Ingrese su elección: ";
         std::cin >> choice;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // descartar cualquier entrada extra
@@ -57,4 +57,5 @@ int main() {
         }
     }
 }
+
 
