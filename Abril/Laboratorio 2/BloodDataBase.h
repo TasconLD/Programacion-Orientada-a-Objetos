@@ -1,31 +1,31 @@
 #ifndef BLOODDATABASE_H
 #define BLOODDATABASE_H
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
 #include "Donor.h"
+#include <vector>
+#include <string>
 
 class BloodDatabase {
 private:
-    const std::string fileName = "data.txt";
-    std::vector<Donor> donors;
+    std::vector<Donor> donors; // Lista para almacenar los donantes
 
-    static void displayProvinces();
+    // Métodos privados 
+    void readDataFromFile();           // Lee datos desde el archivo
+    void validateInput(std::string& input, const std::string& pattern, const std::string& errorMessage); // Validación con regex
 
 public:
-    static void clearConsole();
-    static void waitForKeyPress();
-    static int getValidatedInput(const std::string& prompt);
+    BloodDatabase(); // Constructor
 
-    void getDonorDetails();
-    void writeDataToFile();
-    void searchAndDisplay() const;
-    void deleteDonor(const std::string& donorName);
+    // Funciones principales del sistema
+    void getDonorDetails();           // Solicita los datos del donante 
+    void writeDataToFile() const;     // Escribe los datos al archivo
+    void searchAndDisplay() const;    // Busca y muestra donante
+    void deleteDonor(const std::string& name); // Elimina un donante por el nombre
+    void displayAllDonors() const;    // Muestra todos los donantes registrados
 
-    // Nuevo método para mostrar todos los donantes registrados
-    void showAllDonors() const;
+    // Utilidades estáticas
+    static void clearConsole();       // Limpia la consola
+    static void waitForKeyPress();    // Espera que el usuario presione una tecla
 };
 
-#endif // BLOODDATABASE_H
+#endif
