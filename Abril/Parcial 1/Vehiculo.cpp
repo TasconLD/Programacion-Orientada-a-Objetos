@@ -52,25 +52,25 @@ void Vehiculo::setHora(const string& hora){
 
 
 bool Vehiculo::validarPlaca(const string& placa) {
-    // Valida que la cédula tenga entre 6 y 15 dígitos
+    // Valida la placa
     regex placaRegex("");
     return regex_match(placa, placaRegex);
 }
 
 bool Vehiculo::validarMarca(const string& marca) {
-    // Valida que el nombre tenga letras, espacios y al menos 3 caracteres
+    // Valida la marca
     regex MarcaRegex("");
     return regex_match(marca, marcaRegex);
 }
 
 bool Vehiculo::validarColor(const string& color) {
-    // Valida que la dirección tenga al menos 5 caracteres
+    // Valida el color
     regex colorRegex("");
     return regex_match(color, colorRegex);
 }
 
 bool Vehiculo::validarHora(const string& hora) {
-    // Valida que el teléfono tenga el formato correcto (números y guiones opcionales)
+    // Valida la hora
     regex horaRegex("");
     return regex_match(hora, horaRegex);
 }
