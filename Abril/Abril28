@@ -1,3 +1,18 @@
 Relaciones con otros objetos - pdf 21 abril - 27 abril
 
-contiene: el objeto vive para siempre dentro 
+contiene: el objeto vive para siempre dentro (dentro de private/protect)
+
+
+libro
++codigo
++titulo   *
+
+
+
+biblioteca (conectada a libro)
++nombre
+<vector del libros>*
+
+
+
+main/usuario/ (conectado a biblioteca)
